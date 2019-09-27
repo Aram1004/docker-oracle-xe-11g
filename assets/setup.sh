@@ -39,11 +39,15 @@ mkdir /docker-entrypoint-initdb.d
 export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
 export PATH=$ORACLE_HOME/bin:$PATH
 export ORACLE_SID=XE
-
-echo "ALTER PROFILE DEFAULT LIMIT PASSWORD_VERIFY_FUNCTION NULL;" | sqlplus -s SYSTEM/oracle
-echo "alter profile DEFAULT limit password_life_time UNLIMITED;" | sqlplus -s SYSTEM/oracle
-echo "alter user SYSTEM identified by oracle account unlock;" | sqlplus -s SYSTEM/oracle
-cat /assets/apex-default-pwd.sql | sqlplus -s SYSTEM/oracle
+                   
+echo "ALTER PROFILE DEFAULT LIMIT PASSWORD_VERIFY_FUNCTION NULL;" | /u01/app/oracle/product/11.2.0/xe/bin/sqlplus -s SYSTEM/oracle
+echo "alter profile DEFAULT limit password_life_time UNLIMITED;" | /u01/app/oracle/product/11.2.0/xe/bin/sqlplus -s SYSTEM/oracle
+echo "alter user SYSTEM identified by oracle account unlock;" | /u01/app/oracle/product/11.2.0/xe/bin/sqlplus -s SYSTEM/oracle
+echo "alter user HR identified by hr account unlock;" | /u01/app/oracle/product/11.2.0/xe/bin/sqlplus -s SYSTEM/oracle
+echo "create user SCOTT identified by tiger;" | /u01/app/oracle/product/11.2.0/xe/bin/sqlplus -s SYSTEM/oracle
+echo "grant resource, connect to scott;" | /u01/app/oracle/product/11.2.0/xe/bin/sqlplus -s SYSTEM/oracle
+cat /assets/demo.sql | /u01/app/oracle/product/11.2.0/xe/bin/sqlplus -s SCOTT/tiger
+cat /assets/apex-default-pwd.sql | /u01/app/oracle/product/11.2.0/xe/bin/sqlplus -s SYSTEM/oracle
 
 # Remove installation files
 rm -r /assets/
